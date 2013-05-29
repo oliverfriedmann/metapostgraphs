@@ -4,8 +4,8 @@ MetapostGraphs
 A library that allows you to draw graphs using metapost and latex.
 
 Version 0.1
-(c) Oliver Friedmann, University of Munich
-(c) Thomas D. Hansen, University of Tel Aviv
+- (c) Oliver Friedmann, University of Munich
+- (c) Thomas D. Hansen, University of Tel Aviv
 
 See the demos folder for examples.
 
