@@ -1,12 +1,15 @@
-metapostgraphs
+MetapostGraphs
 ==============
 
-A library that allows you to draw graphs using metapost and latex
+A library that allows you to draw graphs using metapost and latex.
 
-Version 0.1 (c) Oliver Friedmann, University of Munich 
+It is being developed and maintained at the chair for theoretical computer science of the University of Munich, Germany.
+
+Version 0.1 (c) Oliver Friedmann, University of Munich
 
 See the demos folder for examples.
 
 To compile the demos, simply write:
-  > mpost simple_graph.mp ; mpost simple_graph.mp ; pdflatex simple_fig.tex
-  > mpost complex_graph.mp ; mpost complex_graph.mp ; pdflatex complex_fig.tex
+> mpost simple_graph.mp ; mpost simple_graph.mp ; pdflatex simple_fig.tex
+
+> mpost complex_graph.mp ; mpost complex_graph.mp ; pdflatex complex_fig.tex
