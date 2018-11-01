@@ -107,7 +107,7 @@ vardef coords_enter_base(expr new_base) =
 	_coords_current_base := new_base;
 	_coords_base_stack_length := _coords_base_stack_length + 1;
 enddef;
-	
+
 vardef coords_enter_relative_base(expr new_relative_base) =
 	coords_enter_base(_coords_current_base + new_relative_base);
 enddef;
@@ -332,14 +332,14 @@ vardef _group_separator_draw(expr sepid) =
 	xb := xpart llb; yb := ypart llb;
 	xxa := xpart ura; yya := ypart ura;
 	xxb := xpart urb; yyb := ypart urb;
-	
+
 	numeric x,y,xx,yy, xadd, yadd;
 	x := min(xa,xb); y := min(ya,yb);
 	xx := max(xxa,xxb); yy := max(yya,yyb);
-	
+
 	xadd := _group_separators_overlap[sepid] * (xx-x);
 	yadd := _group_separators_overlap[sepid] * (yy-y);
-	
+
 	numeric xmid, ymid, xdist, ydist;
 	if (xxa < xb) :
 		xmid := 0.5(xxa+xb);
@@ -355,15 +355,15 @@ vardef _group_separator_draw(expr sepid) =
 		ymid := 0.5(ya+yyb);
 		ydist := ya-yyb;
 	fi;
-	
+
 	path p;
-	
+
 	if (xdist > ydist) :
 		p := _coord_to_point(xmid, y-yadd) -- _coord_to_point(xmid, yy+yadd);
 	else :
 		p := _coord_to_point(x-xadd, ymid) -- _coord_to_point(xx+xadd, ymid);
 	fi;
-	
+
 	path_style_draw(p, style);
 enddef;
 
@@ -417,7 +417,7 @@ vardef _nodes_reset =
 	_nodes_length := 0;
 enddef;
 
-_nodes_reset;	
+_nodes_reset;
 
 vardef node_register(expr coordidx, styleid) =
 	_nodes_to_coords[_nodes_length] := coordidx;
@@ -430,7 +430,7 @@ vardef node_register(expr coordidx, styleid) =
 	_nodes_groups_to_length[group_current] := _nodes_groups_to_length[group_current] + 1;
 	_nodes_visible[_nodes_length] := true;
 	_nodes_style[_nodes_length] := styleid;
-	_nodes_text_length[_nodes_length] := 0;	
+	_nodes_text_length[_nodes_length] := 0;
 	_nodes_length := _nodes_length+1;
 	group_include_coord(group_current, coordidx);
 	_nodes_length - 1
@@ -513,7 +513,7 @@ vardef _edges_reset =
 	_edges_length := 0;
 enddef;
 
-_edges_reset;	
+_edges_reset;
 
 vardef edge_register(expr sourcecoord, targetcoord, style) =
 	_edges_to_coords[_edges_length][0] := sourcecoord;
@@ -536,6 +536,10 @@ vardef edge_add_text_line(expr edgeidx, pathidx, strng, col, scale, side) =
 	_edges_annot_text_color[edgeidx][pathidx][annotidx] := col;
 	_edges_annot_text_scale[edgeidx][pathidx][annotidx] := scale;
 	_edges_annot_text_side[edgeidx][pathidx][annotidx] := side;
+enddef;
+
+vardef edge_rewrite_text_line(expr edgeidx, pathidx, annotidx, strng) =
+	_edges_annot_text[edgeidx][pathidx][annotidx] := thelabel(strng, (0,0));
 enddef;
 
 vardef edge_register_coord(expr edgeidx, coordidx) =
