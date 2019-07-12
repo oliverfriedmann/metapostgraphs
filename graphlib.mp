@@ -58,7 +58,9 @@
 % procedure node_set_style(node: node_id, style: node_style_id);
 % procedure node_set_visible(node: node_id, visibile: boolean);
 % procedure node_add_text_line(node: node_id, strg: string, col: color);
-% procedure node_set_group(node: node_is, group: group_id);
+% procedure node_set_group(node: node_id, group: group_id);
+% procedure node_add_annot(node: node_id, str: string, col: color, angl: number);
+
 
 
 % Edges
@@ -406,6 +408,12 @@ boolean _nodes_visible[];
 color _nodes_text_color[][];
 picture _nodes_text[][];
 numeric _nodes_text_length[];
+% Group Annotations
+numeric _node_annot_length[];
+color _node_annot_text_color[][];
+picture _node_annot_text[][];
+numeric _node_annot_position[][];
+
 
 vardef _nodes_reset =
 	for i = 0 upto _group_length - 1 :
@@ -420,6 +428,7 @@ enddef;
 _nodes_reset;
 
 vardef node_register(expr coordidx, styleid) =
+  _node_annot_length[_nodes_length] := 0;
 	_nodes_to_coords[_nodes_length] := coordidx;
 	_nodes_coords_to[coordidx] := _nodes_length;
 	_nodes_to_groups[_nodes_length] := group_current;
@@ -478,14 +487,29 @@ vardef _node_draw(expr nodeidx) =
 		pair p;
 		numeric style;
 		numeric x,y;
-		style := _nodes_style[nodeidx];
-		p := _coords[_nodes_to_coords[nodeidx]];
-		primitive_style_draw_mid(_node_styles_prim[style], p, _node_styles_dia[style]);
-		for i = 0 upto _nodes_text_length[nodeidx]-1:
-			label(_nodes_text[nodeidx][i], p + (0cm,0.2cm * (_nodes_text_length[nodeidx]-1) - i * 0.4cm)) withcolor _nodes_text_color[nodeidx][i];
+		picture pict;
+		pict := image(
+			style := _nodes_style[nodeidx];
+			p := _coords[_nodes_to_coords[nodeidx]];
+			primitive_style_draw_mid(_node_styles_prim[style], p, _node_styles_dia[style]);
+			for i = 0 upto _nodes_text_length[nodeidx]-1:
+				label(_nodes_text[nodeidx][i], p + (0cm,0.2cm * (_nodes_text_length[nodeidx]-1) - i * 0.4cm)) withcolor _nodes_text_color[nodeidx][i];
+			endfor;
+		);
+		for i = 0 upto _node_annot_length[nodeidx] - 1 :
+			label_by_bbox(_node_annot_text[nodeidx][i], pict, _node_annot_position[nodeidx][i], _node_annot_text_color[nodeidx][i]);
 		endfor;
+		draw pict;
 	fi;
 enddef;
+
+vardef node_add_annot(expr nodeidx, strng, col, posi) =
+	_node_annot_text[nodeidx][_node_annot_length[nodeidx]] := thelabel(strng, (0,0));
+	_node_annot_text_color[nodeidx][_node_annot_length[nodeidx]] := col;
+	_node_annot_position[nodeidx][_node_annot_length[nodeidx]] := posi;
+	_node_annot_length[nodeidx] := _node_annot_length[nodeidx] + 1;
+enddef;
+
 
 
 
